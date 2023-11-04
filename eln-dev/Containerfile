@@ -1,0 +1,6 @@
+FROM quay.io/centos-boot/fedora-boot:eln
+# FROM registry.gitlab.com/centos/cloud/sagano/fedora-boot-tier-1:eln
+COPY *.repo /etc/yum.repos.d/
+RUN dnf --disablerepo='*' --enablerepo=copr-coreos-continuous --enablerepo=copr-rhcontainerbot-bootc -y distro-sync && \
+    dnf clean all && rm -rf /var/* && \
+    ostree container commit
