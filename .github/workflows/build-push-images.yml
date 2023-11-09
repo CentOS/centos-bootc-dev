@@ -1,0 +1,42 @@
+name: publish-image
+
+on:
+
+  push:
+    branches:
+    - main
+
+  workflow_dispatch:
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+
+    env:
+      dir: eln-dev
+
+    steps:
+      - name: Install qemu dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static
+
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+
+      - name: Login to quay.io
+        run: buildah login --username ${{ secrets.QUAY_USER }} --password ${{ secrets.QUAY_PASSWORD }} quay.io
+
+      - name: Build
+        id: build
+        uses: redhat-actions/buildah-build@b4dc19b4ba891854660ab1f88a097d45aa158f76 # v2.12
+        with:
+          image: quay.io/centos-boot/fedora-tier-1-dev
+          tags: eln
+          containerfiles: ./${{ env.dir }}/Containerfile
+          archs: amd64
+          context: ${{ env.dir }}
+
+      - name: Push To quay.io
+        #run: buildah manifest push --all ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
+        run: buildah push ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
