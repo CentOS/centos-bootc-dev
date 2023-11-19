@@ -1,0 +1,5 @@
+FROM quay.io/centos-boot/centos-tier-1:stream9
+COPY *.repo /etc/yum.repos.d/
+RUN dnf --disablerepo='*' --enablerepo=copr-coreos-continuous --enablerepo=copr-rhcontainerbot-bootc -y distro-sync && \
+    dnf clean all && rm -rf /var/* && \
+    ostree container commit
