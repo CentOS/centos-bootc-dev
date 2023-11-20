@@ -1,4 +1,4 @@
-FROM quay.io/centos-boot/centos-tier-1:stream9
+FROM quay.io/centos-boot/centos-tier-1:stream9@sha256:4ce91df1770222836f6b8e3d2d73315a22e2c712103ee9cabe4b13ce9c4a1d08
 COPY *.repo /etc/yum.repos.d/
 RUN dnf --disablerepo='*' --enablerepo=copr-coreos-continuous --enablerepo=copr-rhcontainerbot-bootc -y distro-sync && \
     rpm -q bootc || dnf -y install bootc && \
