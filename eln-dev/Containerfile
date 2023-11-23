@@ -1,4 +1,4 @@
-FROM quay.io/centos-boot/fedora-tier-1:eln
+FROM quay.io/centos-bootc/fedora-bootc:eln
 COPY *.repo /etc/yum.repos.d/
 RUN dnf --disablerepo='*' --enablerepo=copr-coreos-continuous --enablerepo=copr-rhcontainerbot-bootc -y distro-sync && \
     dnf clean all && rm -rf /var/* && \
