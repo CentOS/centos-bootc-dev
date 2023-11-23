@@ -1,13 +1,22 @@
 name: publish-image
 
 on:
-
   push:
     branches:
-    - main
+      - main
+
   schedule:
-    - cron: '35 */4 * * *'
+    - cron: "35 */4 * * *"
+
+  pull_request:
+    branches:
+      - main
+
   workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: centos/centos-bootc-dev
 
 jobs:
   build-and-push-image:
@@ -17,10 +26,10 @@ jobs:
       matrix:
         os: [fedora, centos]
         include:
-        - os: fedora
-          version: eln
-        - os: centos
-          version: stream9
+          - os: fedora
+            version: eln
+          - os: centos
+            version: stream9
 
     steps:
       - name: Install qemu dependency
@@ -33,17 +42,18 @@ jobs:
 
       - name: Login to quay.io
         run: buildah login --username ${{ secrets.QUAY_USER }} --password ${{ secrets.QUAY_PASSWORD }} quay.io
+        if: ${{ github.event_name == 'push' }}
 
       - name: Build
         id: build
         uses: redhat-actions/buildah-build@b4dc19b4ba891854660ab1f88a097d45aa158f76 # v2.12
         with:
-          image: quay.io/centos-boot/${{ matrix.os }}-tier-1-dev
+          image: quay.io/centos-boot/${{ matrix.os }}-bootc-dev
           tags: ${{ matrix.version }}
           containerfiles: ./${{ matrix.version }}-dev/Containerfile
           archs: amd64
           context: ${{ matrix.version }}-dev
 
       - name: Push To quay.io
-        #run: buildah manifest push --all ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
         run: buildah push ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
+        if: ${{ github.event_name == 'push' }}

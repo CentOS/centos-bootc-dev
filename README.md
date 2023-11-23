@@ -1,6 +1,6 @@
-# centos-boot-dev
+# centos-bootc-dev
 
-Development images for [centos-boot](https://github.com/CentOS/centos-boot).
+Development images for [centos-bootc](https://github.com/CentOS/centos-bootc).
 
 ## Badges
 
