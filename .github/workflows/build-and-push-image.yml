@@ -42,7 +42,7 @@ jobs:
 
       - name: Login to quay.io
         run: buildah login --username ${{ secrets.QUAY_USER }} --password ${{ secrets.QUAY_PASSWORD }} quay.io
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name != 'pull_request' }}
 
       - name: Build
         id: build
@@ -56,4 +56,4 @@ jobs:
 
       - name: Push To quay.io
         run: buildah push ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name != 'pull_request' }}
