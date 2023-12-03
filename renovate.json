@@ -1,7 +1,15 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>CentOS/.github:renovate-config",
-    "default:pinDigestsDisabled"
+    "local>CentOS/.github:renovate-config"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "quay.io/centos-bootc/fedora-bootc",
+        "quay.io/centos-bootc/centos-bootc"
+      ],
+      "pinDigests": false
+    }
   ]
 }
