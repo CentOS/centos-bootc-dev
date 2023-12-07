@@ -51,9 +51,9 @@ jobs:
           image: quay.io/centos-bootc/${{ matrix.os }}-bootc-dev
           tags: ${{ matrix.version }}
           containerfiles: ./${{ matrix.version }}-dev/Containerfile
-          archs: amd64
+          archs: amd64, arm64
           context: ${{ matrix.version }}-dev
 
       - name: Push To quay.io
-        run: buildah push ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
+        run: buildah manifest push --all ${{ steps.build.outputs.image-with-tag }} docker://${{ steps.build.outputs.image-with-tag }}
         if: ${{ github.event_name != 'pull_request' }}
