@@ -1,5 +1,4 @@
 FROM quay.io/centos-bootc/centos-bootc:stream9
 COPY *.repo /etc/yum.repos.d/
 RUN dnf --disablerepo='*' --enablerepo=copr-coreos-continuous --enablerepo=copr-rhcontainerbot-bootc -y distro-sync && \
-    rpm -q bootc || dnf -y install bootc && \
     dnf clean all
