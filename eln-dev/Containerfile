@@ -1,4 +1,5 @@
 FROM quay.io/centos-bootc/fedora-bootc:eln
+COPY usr usr
 COPY *.repo /etc/yum.repos.d/
 RUN dnf --disablerepo='*' --enablerepo=copr-coreos-continuous --enablerepo=copr-rhcontainerbot-bootc -y distro-sync && \
     dnf clean all
