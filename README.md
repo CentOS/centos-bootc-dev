@@ -1,6 +1,11 @@
 # centos-bootc-dev
 
 Development images for [centos-bootc](https://github.com/CentOS/centos-bootc).
+These track git main/master of various projects such as bootc/ostree etc.
+and are regenerated multiple times a day.
+
+- Fedora ELN: `quay.io/centos-bootc/fedora-bootc-dev:eln`
+- CentOS Stream 9: `quay.io/centos-bootc/centos-bootc-dev:stream9`
 
 ## Badges
 
